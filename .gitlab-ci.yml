@@ -1,4 +1,8 @@
-image: mhart/alpine-node:11
+# image: mhart/alpine-node:11
+image: docker:git
+services:
+  - docker:dind
+
 
 stages:          # List of stages for jobs, and their order of execution
   - build

@@ -2,19 +2,21 @@ image: mhart/alpine-node:11
 
 stages:          # List of stages for jobs, and their order of execution
   - build
-  - deploy
 
-build-job:       # This job runs in the build stage, which runs first.
+build-docker-img-prod:       # This job runs in the build stage, which runs first.
+  stage: build
+  script:
+    - docker build -t test .
+  only:
+    - master
+
+build-docker-img-dev:       # This job runs in the build stage, which runs first.
   stage: build
   script:
     - npm install
     - npm run build
     - echo "Compile complete."
     - echo $REACT_APP_ENV
+  only:
+    - master
 
-
-deploy-job:      # This job runs in the deploy stage.
-  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
-  script:
-    - echo "Deploying application..."
-    - echo "Application successfully deployed."

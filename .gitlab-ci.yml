@@ -7,19 +7,7 @@ services:
 #https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
 
 stages: # List of stages for jobs, and their order of execution
-  - build image Production
   - build image Development
-
-build-docker-img-prod:
-  stage: build image Production
-  script:
-    - echo $CI_COMMIT_SHORT_SHA
-    - docker login registry.gitlab.com -u $USER -p $PASSWORD
-    - docker build --pull -t $CI_REGISTRY_IMAGE:prod-$CI_COMMIT_SHORT_SHA .
-    - docker push $CI_REGISTRY_IMAGE:prod-$CI_COMMIT_SHORT_SHA
-    - docker images
-  only:
-    - master
 
 build-docker-img-dev:
   stage: build image Development

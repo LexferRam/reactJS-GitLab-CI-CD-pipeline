@@ -11,11 +11,11 @@ stages:          # List of stages for jobs, and their order of execution
 build-docker-img-prod:       # This job runs in the build stage, which runs first.
   stage: build image Production
   script:
-    - docker login registry.gitlab.com -u $USER -p $PASSWORD
-    - docker build --pull -t $CI_REGISTRY_IMAGE:prod-$CI_COMMIT_REF_SLUG .
-    - docker push $CI_REGISTRY_IMAGE:prod-$CI_COMMIT_REF_SLUG
-    # - docker build -t test .
-    - docker images
+    - echo $CI_COMMIT_REF_SLUG
+    # - docker login registry.gitlab.com -u $USER -p $PASSWORD
+    # - docker build --pull -t $CI_REGISTRY_IMAGE:prod-$CI_COMMIT_REF_SLUG .
+    # - docker push $CI_REGISTRY_IMAGE:prod-$CI_COMMIT_REF_SLUG
+    # - docker images
   only:
     - master
 

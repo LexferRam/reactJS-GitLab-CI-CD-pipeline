@@ -7,14 +7,17 @@ services:
 #https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
 #NOTA: para que funcione el login las variables creadas en settings>CI/CD>variables de entorno no deben estar protected
 
-stages:          # List of stages for jobs, and their order of execution
+variables:
+  REACT_APP_TEST: $REACT_APP_TEST
+
+stages: # List of stages for jobs, and their order of execution
   - build image Production
   - build image Development
 
-build-docker-img-prod:       
+build-docker-img-prod:
   stage: build image Production
   script:
-    - echo $CI_COMMIT_SHORT_SHA 
+    - echo $REACT_APP_TEST
     - docker login registry.gitlab.com -u $USER -p $PASSWORD
     - docker build --pull -t $CI_REGISTRY_IMAGE:prod-$CI_COMMIT_SHORT_SHA .
     - docker push $CI_REGISTRY_IMAGE:prod-$CI_COMMIT_SHORT_SHA
@@ -22,7 +25,7 @@ build-docker-img-prod:
   only:
     - master
 
-build-docker-img-dev:       
+build-docker-img-dev:
   stage: build image Development
   script:
     - docker login registry.gitlab.com -u $USER -p $PASSWORD
@@ -31,4 +34,3 @@ build-docker-img-dev:
     - docker images
   only:
     - desarrollo
-

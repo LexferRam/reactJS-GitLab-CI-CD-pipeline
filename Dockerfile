@@ -8,13 +8,11 @@ WORKDIR /app
 #copia el directorio de trabajo actual al WORKDIR declarado en la imagen(paso anterior)
 COPY package.json .
 
-COPY yarn.lock .
-
-RUN yarn install
+RUN npm install
 
 COPY . .
 
-RUN yarn run build
+RUN npm run build
 
 
 # CREATE NGINX SERVER

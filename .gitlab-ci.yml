@@ -16,13 +16,13 @@ build-docker-img-prod:       # This job runs in the build stage, which runs firs
   only:
     - master
 
-# build-docker-img-dev:       # This job runs in the build stage, which runs first.
-#   stage: build
-#   script:
-#     - npm install
-#     - npm run build
-#     - echo "Compile complete."
-#     - echo $REACT_APP_ENV
-#   only:
-#     - master
+build-docker-img-dev:       # This job runs in the build stage, which runs first.
+  stage: build
+  script:
+    - npm install
+    - npm run build
+    - echo "Compile complete."
+    - echo $REACT_APP_ENV
+  only:
+    - desarrollo
 

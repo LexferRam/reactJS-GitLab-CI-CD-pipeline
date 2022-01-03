@@ -4,7 +4,7 @@ import React from 'react'
 function App() {
   return (
     <div className="App">
-      rama de produccion
+      rama de produccion:: {process.env.REACT_APP_ENV}
     </div>
   );
 }

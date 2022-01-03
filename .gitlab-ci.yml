@@ -12,7 +12,7 @@ stages: # List of stages for jobs, and their order of execution
 build-docker-img-dev:
   stage: build image Development
   script:
-    - echo $CI_COMMIT_SHORT_SHA
+    - echo $USER
     - docker login registry.gitlab.com -u $USER -p $PASSWORD
     - docker build --pull -t $CI_REGISTRY_IMAGE:dev-$CI_COMMIT_SHORT_SHA .
     - docker push $CI_REGISTRY_IMAGE:dev-$CI_COMMIT_SHORT_SHA

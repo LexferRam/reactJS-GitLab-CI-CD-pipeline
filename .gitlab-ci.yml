@@ -10,7 +10,7 @@ stages:          # List of stages for jobs, and their order of execution
   - build image Production
   - build image Development
 
-build-docker-img-prod:       # This job runs in the build stage, which runs first.
+build-docker-img-prod:       
   stage: build image Production
   script:
     - echo $CI_COMMIT_SHORT_SHA 
@@ -21,7 +21,7 @@ build-docker-img-prod:       # This job runs in the build stage, which runs firs
   only:
     - master
 
-build-docker-img-dev:       # This job runs in the build stage, which runs first.
+build-docker-img-dev:       
   stage: build image Development
   script:
     - docker login registry.gitlab.com -u $USER -p $PASSWORD

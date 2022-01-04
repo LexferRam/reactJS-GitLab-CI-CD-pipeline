@@ -1,20 +1,17 @@
-# image: mhart/alpine-node:11
 image: docker:git
 services:
   - docker:dind
 
-#VARIABLES GITLAB CI CD
+#PREDEFINED VARIABLES GITLAB CI/CD
 #https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
 #NOTA: para que funcione el login las variables creadas en settings>CI/CD>variables de entorno no deben estar protected
-
-variables:
-  REACT_APP_TEST: $REACT_APP_ENV
 
 stages: # List of stages for jobs, and their order of execution
   - Build
   - image Production
   - image Development
 
+# COMPILE THE PROJECT
 build-project:
   stage: Build
   image: mhart/alpine-node:11
@@ -28,22 +25,26 @@ build-project:
     paths:
       - build/
 
+# (MASTER)Build image and upload to registry
 build-docker-img-prod:
   stage: image Production
   script:
-    - echo $REACT_APP_TEST
+    - echo ENVIROMENT $REACT_APP_ENV
     - docker login registry.gitlab.com -u $USER -p $PASSWORD
     - docker build --pull -t $CI_REGISTRY_IMAGE:prod-$CI_COMMIT_SHORT_SHA .
     - docker push $CI_REGISTRY_IMAGE:prod-$CI_COMMIT_SHORT_SHA
     - docker images
   only:
     - master
-# build-docker-img-dev:
-#   stage: image Development
-#   script:
-#     - docker login registry.gitlab.com -u $USER -p $PASSWORD
-#     - docker build --pull -t $CI_REGISTRY_IMAGE:dev-$CI_COMMIT_SHORT_SHA .
-#     - docker push $CI_REGISTRY_IMAGE:dev-$CI_COMMIT_SHORT_SHA
-#     - docker images
-#   only:
-#     - desarrollo
+
+# (DEVELOP)Build image and upload to registry
+build-docker-img-dev:
+  stage: image Development
+  script:
+    - echo ENVIROMENT $REACT_APP_ENV
+    - docker login registry.gitlab.com -u $USER -p $PASSWORD
+    - docker build --pull -t $CI_REGISTRY_IMAGE:dev-$CI_COMMIT_SHORT_SHA .
+    - docker push $CI_REGISTRY_IMAGE:dev-$CI_COMMIT_SHORT_SHA
+    - docker images
+  only:
+    - desarrollo

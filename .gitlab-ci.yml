@@ -15,8 +15,8 @@ stages: # List of stages for jobs, and their order of execution
   - image Production
   - image Development
 
-build-docker-img-prod:
-  stage: image Production
+build-project:
+  stage: Build
   image: mhart/alpine-node:11
   script:
     - npm run build

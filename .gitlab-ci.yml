@@ -38,6 +38,7 @@ build-docker-img-prod:
         docker build --pull -t $CI_REGISTRY_IMAGE:prod-ocea-$CI_COMMIT_SHORT_SHA .
         docker push $CI_REGISTRY_IMAGE:prod-ocea-$CI_COMMIT_SHORT_SHA
         docker images
+      fi
   only:
     - master
 

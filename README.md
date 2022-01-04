@@ -3,7 +3,7 @@
 Este proyecto contiene un pipeline que **genera la imagen de docker con el Dockerfile y la sube al registry de gitlab**
 
 
-1. agregar variables de entorno en gitlab(agregar secrets con las credenciales para autenticarse a gitlab registry)(settings> CI CD>Variables)
+1. agregar variables de entorno en gitlab(agregar secrets con las credenciales para autenticarse a gitlab registry y quitarle el 'protected' para que el pipeline funcione para las ramas indicadas)(settings> CI CD>Variables)
 2. escribir pipeline que ejecute el build (crear archivo: .gitlab-ci.yml)
 
 ```yml

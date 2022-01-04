@@ -27,13 +27,14 @@ build-project:
 build-docker-img-prod:
   stage: image Production
   script:
-    - >
-      docker login registry.gitlab.com -u $USER -p $PASSWORD
+    - |
       if [ "$REACT_APP_COMPANIA" == "PIRAMIDE" ]; then
+        docker login registry.gitlab.com -u $USER -p $PASSWORD
         docker build --pull -t $CI_REGISTRY_IMAGE:prod-pira-$CI_COMMIT_SHORT_SHA .
         docker push $CI_REGISTRY_IMAGE:prod-pira-$CI_COMMIT_SHORT_SHA
         docker images
       else
+        docker login registry.gitlab.com -u $USER -p $PASSWORD
         docker build --pull -t $CI_REGISTRY_IMAGE:prod-ocea-$CI_COMMIT_SHORT_SHA .
         docker push $CI_REGISTRY_IMAGE:prod-ocea-$CI_COMMIT_SHORT_SHA
         docker images      
@@ -45,13 +46,14 @@ build-docker-img-prod:
 build-docker-img-dev:
   stage: image Development
   script:
-    - >
-      docker login registry.gitlab.com -u $USER -p $PASSWORD
+    - |
       if [ "$REACT_APP_COMPANIA" == "PIRAMIDE" ]; then
+        docker login registry.gitlab.com -u $USER -p $PASSWORD  
         docker build --pull -t $CI_REGISTRY_IMAGE:desa-pira-$CI_COMMIT_SHORT_SHA .
         docker push $CI_REGISTRY_IMAGE:desa-pira-$CI_COMMIT_SHORT_SHA
         docker images
       else
+        docker login registry.gitlab.com -u $USER -p $PASSWORD  
         docker build --pull -t $CI_REGISTRY_IMAGE:desa-ocea-$CI_COMMIT_SHORT_SHA .
         docker push $CI_REGISTRY_IMAGE:desa-ocea-$CI_COMMIT_SHORT_SHA
         docker images      

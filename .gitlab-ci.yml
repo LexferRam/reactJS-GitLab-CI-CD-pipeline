@@ -11,17 +11,20 @@ stages:
   - image Production
   - image Development
 
+variables:
+  TEST_VAR: "All jobs can use this variable's value"
+
 # COMPILE THE PROJECT
-# build-project:
-#   stage: Build
-#   image: mhart/alpine-node:11
-#   script:
-#     - echo AMBIENTE = $REACT_APP_ENV, COMPANIA = $REACT_APP_COMPANIA
-#     - npm install
-#     - npm run build
-#   artifacts:
-#     paths:
-#       - build/
+build-project:
+  stage: Build
+  image: mhart/alpine-node:11
+  script:
+    - echo AMBIENTE = $REACT_APP_ENV, COMPANIA = $REACT_APP_COMPANIA, $TEST_VAR
+    - npm install
+    - npm run build
+  artifacts:
+    paths:
+      - build/
 
 # (MASTER)Build image and upload to registry
 build-docker-img-prod:

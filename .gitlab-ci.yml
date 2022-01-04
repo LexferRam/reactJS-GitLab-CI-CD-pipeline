@@ -17,8 +17,9 @@ stages: # List of stages for jobs, and their order of execution
 
 build-project:
   stage: Build
-  image: mhart/alpine-node:11
+  # image: mhart/alpine-node:11
   script:
+    - npm run install
     - npm run build
   artifacts:
     paths:

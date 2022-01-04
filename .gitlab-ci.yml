@@ -20,10 +20,9 @@ build-docker-img-prod:
   image: mhart/alpine-node:11
   script:
     - npm run build
-    artifacts:
-      paths: 
-        - build/
-
+  artifacts:
+    paths:
+      - build/
 # build-docker-img-prod:
 #   stage: image Production
 #   script:

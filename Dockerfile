@@ -34,7 +34,7 @@ WORKDIR /etc/nginx/conf.d
 
 COPY default.conf ./
 
-COPY --chown=nginx:nginx /public /usr/share/nginx/html
+COPY --chown=nginx:nginx /build /usr/share/nginx/html
 
 RUN touch /var/run/nginx.pid && chown nginx:nginx /var/run/nginx.pid  && chown -R nginx:nginx /var/cache/nginx/
 

@@ -19,7 +19,8 @@ build-project:
   stage: Build
   image: mhart/alpine-node:11
   script:
-    - npm run install
+    - echo REACT_APP_TEST
+    - npm install
     - npm run build
   artifacts:
     paths:

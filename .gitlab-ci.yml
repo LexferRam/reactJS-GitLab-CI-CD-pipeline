@@ -11,26 +11,36 @@ variables:
   REACT_APP_TEST: $REACT_APP_TEST
 
 stages: # List of stages for jobs, and their order of execution
-  - build image Production
-  - build image Development
+  - Build
+  - image Production
+  - image Development
 
 build-docker-img-prod:
-  stage: build image Production
+  stage: image Production
+  image: mhart/alpine-node:11
   script:
-    - echo $REACT_APP_TEST
-    - docker login registry.gitlab.com -u $USER -p $PASSWORD
-    - docker build --pull -t $CI_REGISTRY_IMAGE:prod-$CI_COMMIT_SHORT_SHA .
-    - docker push $CI_REGISTRY_IMAGE:prod-$CI_COMMIT_SHORT_SHA
-    - docker images
-  only:
-    - master
+    - npm run build
+    artifacts:
+      paths: 
+        - build/
 
-build-docker-img-dev:
-  stage: build image Development
-  script:
-    - docker login registry.gitlab.com -u $USER -p $PASSWORD
-    - docker build --pull -t $CI_REGISTRY_IMAGE:dev-$CI_COMMIT_SHORT_SHA .
-    - docker push $CI_REGISTRY_IMAGE:dev-$CI_COMMIT_SHORT_SHA
-    - docker images
-  only:
-    - desarrollo
+# build-docker-img-prod:
+#   stage: image Production
+#   script:
+#     - echo $REACT_APP_TEST
+#     - docker login registry.gitlab.com -u $USER -p $PASSWORD
+#     - docker build --pull -t $CI_REGISTRY_IMAGE:prod-$CI_COMMIT_SHORT_SHA .
+#     - docker push $CI_REGISTRY_IMAGE:prod-$CI_COMMIT_SHORT_SHA
+#     - docker images
+#   only:
+#     - master
+
+# build-docker-img-dev:
+#   stage: image Development
+#   script:
+#     - docker login registry.gitlab.com -u $USER -p $PASSWORD
+#     - docker build --pull -t $CI_REGISTRY_IMAGE:dev-$CI_COMMIT_SHORT_SHA .
+#     - docker push $CI_REGISTRY_IMAGE:dev-$CI_COMMIT_SHORT_SHA
+#     - docker images
+#   only:
+#     - desarrollo

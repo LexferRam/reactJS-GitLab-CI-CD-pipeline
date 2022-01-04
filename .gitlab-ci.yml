@@ -1,21 +1,75 @@
-# image: mhart/alpine-node:11
 image: docker:git
 services:
   - docker:dind
 
-#VARIABLES GITLAB CI CD
+#PREDEFINED VARIABLES GITLAB CI/CD
 #https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
+#NOTA: para que funcione el login las variables creadas en settings>CI/CD>variables de entorno no deben estar protected
 
-stages: # List of stages for jobs, and their order of execution
-  - build image Development
+stages:
+  - Build
+  - image Production
+  - image Development
 
-build-docker-img-dev:
-  stage: build image Development
+variables:
+  TEST_VAR: "All jobs can use this variable's value"
+
+# COMPILE THE PROJECT
+build-project:
+  stage: Build
+  image: mhart/alpine-node:11
   script:
-    - echo $USER
-    - docker login registry.gitlab.com -u $USER -p $PASSWORD
-    - docker build --pull -t $CI_REGISTRY_IMAGE:dev-$CI_COMMIT_SHORT_SHA .
-    - docker push $CI_REGISTRY_IMAGE:dev-$CI_COMMIT_SHORT_SHA
-    - docker images
+    - echo AMBIENTE = $REACT_APP_ENV, COMPANIA = $REACT_APP_COMPANIA, $TEST_VAR
+    - npm install
+    - npm run build
+  artifacts:
+    paths:
+      - build/
+
+# (MASTER)Build image and upload to registry
+build-docker-img-prod:
+  stage: image Production
+  script:
+    - |
+      if [ "$REACT_APP_COMPANIA" == "PIRAMIDE" ]; then
+        docker login registry.gitlab.com -u $USER -p $PASSWORD
+        docker build --pull -t $CI_REGISTRY_IMAGE:prod-pira-$CI_COMMIT_SHORT_SHA .
+        docker push $CI_REGISTRY_IMAGE:prod-pira-$CI_COMMIT_SHORT_SHA
+        docker images
+      else
+        docker login registry.gitlab.com -u $USER -p $PASSWORD
+        docker build --pull -t $CI_REGISTRY_IMAGE:prod-ocea-$CI_COMMIT_SHORT_SHA .
+        docker push $CI_REGISTRY_IMAGE:prod-ocea-$CI_COMMIT_SHORT_SHA
+        docker images      
+      fi
+  only:
+    - master
+
+# (DEVELOP)Build image and upload to registry
+build-docker-img-dev:
+  stage: image Development
+  script:
+    - |
+      if [ "$REACT_APP_COMPANIA" == "PIRAMIDE" ]; then
+        docker login registry.gitlab.com -u $USER -p $PASSWORD  
+        docker build --pull -t $CI_REGISTRY_IMAGE:desa-pira-$CI_COMMIT_SHORT_SHA .
+        docker push $CI_REGISTRY_IMAGE:desa-pira-$CI_COMMIT_SHORT_SHA
+        docker images
+      else
+        docker login registry.gitlab.com -u $USER -p $PASSWORD  
+        docker build --pull -t $CI_REGISTRY_IMAGE:desa-ocea-$CI_COMMIT_SHORT_SHA .
+        docker push $CI_REGISTRY_IMAGE:desa-ocea-$CI_COMMIT_SHORT_SHA
+        docker images      
+      fi
   only:
     - desarrollo
+# # (DEVELOP)Build image and upload to registry
+# build-docker-img-dev:
+#   stage: image Development
+#   script:
+#     - docker login registry.gitlab.com -u $USER -p $PASSWORD
+#     - docker build --pull -t $CI_REGISTRY_IMAGE:dev-$CI_COMMIT_SHORT_SHA .
+#     - docker push $CI_REGISTRY_IMAGE:dev-$CI_COMMIT_SHORT_SHA
+#     - docker images
+#   only:
+#     - desarrollo
